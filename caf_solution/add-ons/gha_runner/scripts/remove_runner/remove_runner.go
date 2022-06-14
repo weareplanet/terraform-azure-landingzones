@@ -39,7 +39,7 @@ func GetRunnersToRemove(client *github.Client, config Config) (map[int64]*github
 				}
 			}
 		}
-		if resp.NextPage == 0 {
+		if resp.NextPage == 0 || len(runnersToRemove) == config.numRunners {
 			break
 		}
 		opt.Page = resp.NextPage
