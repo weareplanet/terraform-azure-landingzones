@@ -22,13 +22,14 @@ resource "azurerm_virtual_machine_extension" "gha_runner" {
   protected_settings = jsonencode(
     {
       "commandToExecute" : format(
-        "bash '%s' '%s' '%s' '%s' '%s' '%s'",
+        "bash '%s' '%s' '%s' '%s' '%s' '%s' '%s'",
         var.extensions[each.key].runner_init_script,
         var.settings[each.key].gha_runner.gh_org,
         var.settings[each.key].token,
         join("-", concat(var.global_settings.prefixes, [var.settings[each.key].gha_runner.runner_name_prefix])),
         var.settings[each.key].admin_username,
         var.settings[each.key].gha_runner.num_runners,
+        var.settings[each.key].gha_runner.labels,
       )
     }
   )

@@ -7,6 +7,7 @@ TOKEN=${2}
 PREFIX=${3}
 ADMIN_USER=${4}
 NUM_RUNNERS=${5}
+LABELS=${6}
 
 RUNNER_URL="https://github.com/actions/runner/releases/download/v2.292.0/actions-runner-linux-x64-2.292.0.tar.gz"
 RUNNER_TOKEN_URL="https://api.github.com/orgs/${GH_ORG}/actions/runners/registration-token"
@@ -44,7 +45,7 @@ for i in $(seq 1 ${NUM_RUNNERS}); do
     -H 'Content-Type: application/json' | jq -r .token)
 
   sudo -u ${ADMIN_USER} ./config.sh --unattended --url https://github.com/${GH_ORG} \
-    --token ${RUNNER_TOKEN} --replace --name ${runner_name}
+    --token ${RUNNER_TOKEN} --replace --name ${runner_name} --labels ${LABELS}
   ./svc.sh install
   ./svc.sh start
 
