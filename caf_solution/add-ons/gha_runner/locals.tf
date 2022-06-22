@@ -7,6 +7,13 @@ locals {
     }
   )
 
+  database = merge(
+    var.database,
+    {
+      app_config_entries = var.app_config_entries
+    }
+  )
+
   security = merge(
     var.security,
     {

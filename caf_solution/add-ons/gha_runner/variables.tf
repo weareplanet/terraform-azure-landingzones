@@ -104,4 +104,9 @@ variable "dynamic_keyvault_secrets" {
 variable "managed_identities" {
   default = {}
 }
-
+variable "database" {
+  default = {}
+}
+variable "app_config_entries" {
+  default = {}
+}
