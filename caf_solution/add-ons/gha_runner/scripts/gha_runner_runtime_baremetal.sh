@@ -9,7 +9,8 @@ ADMIN_USER=${4}
 NUM_RUNNERS=${5}
 LABELS=${6}
 
-RUNNER_URL="https://github.com/actions/runner/releases/download/v2.292.0/actions-runner-linux-x64-2.292.0.tar.gz"
+LATEST_VERSION=$(curl -s https://api.github.com/repos/actions/runner/releases/latest | grep -oP '"tag_name": "v\K(.*)(?=")')
+RUNNER_URL="https://github.com/actions/runner/releases/download/v${LATEST_VERSION}/actions-runner-linux-x64-${LATEST_VERSION}.tar.gz"
 RUNNER_TOKEN_URL="https://api.github.com/orgs/${GH_ORG}/actions/runners/registration-token"
 
 export DEBIAN_FRONTEND=noninteractive
