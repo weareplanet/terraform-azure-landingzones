@@ -36,11 +36,11 @@ module "caf" {
 
   # Pass the remote objects you need to connect to.
   remote_objects = {
-    keyvaults                  = local.remote.keyvaults
-    managed_identities         = local.remote.managed_identities
-    azuread_groups             = local.remote.azuread_groups
-    vnets                      = local.remote.vnets
-    app_config                 = local.remote.app_config
-    container_registry         = local.remote.azure_container_registries
+    keyvaults          = local.remote.keyvaults
+    managed_identities = local.remote.managed_identities
+    azuread_groups     = local.remote.azuread_groups
+    vnets              = local.remote.vnets
+    app_config         = local.remote.app_config
+    container_registry = local.remote.azure_container_registries
   }
 }
