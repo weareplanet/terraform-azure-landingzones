@@ -32,3 +32,6 @@ variable "github" {}
 variable "gh_repo_secrets" {
   default = {}
 }
+variable "gh_environments" {
+  default = {}
+}
