@@ -20,6 +20,12 @@ variable "rover_version" {
 variable "tags" {
   default = null
 }
+variable "logged_user_objectId" {
+  default = null
+}
+variable "logged_aad_app_objectId" {
+  default = null
+}
 
 variable "managed_identities" {
   default = {}
