@@ -22,8 +22,9 @@ resource "azurerm_virtual_machine_extension" "gha_runner" {
   protected_settings = jsonencode(
     {
       "commandToExecute" : format(
-        "bash '%s' '%s' '%s' '%s' '%s' '%s' '%s'",
+        "bash '%s' '%s' '%s' '%s' '%s' '%s' '%s' '%s'",
         var.extensions[each.key].runner_init_script,
+        try(var.settings[each.key].gha_runner.repo, ""),
         var.settings[each.key].gha_runner.gh_org,
         var.settings[each.key].token,
         join("-", concat(var.global_settings.prefixes, [var.settings[each.key].gha_runner.runner_name_prefix])),
@@ -49,6 +50,7 @@ resource "null_resource" "remove_runner" {
     working_dir = "scripts/remove_runner"
     environment = {
       GH_RUNNER_PREFIX = self.triggers.GH_RUNNER_PREFIX
+      GH_REPO          = self.triggers.GH_REPO
       GH_ORG           = self.triggers.GH_ORG
       GH_TOKEN         = self.triggers.GH_TOKEN
       GH_NUM_RUNNERS   = self.triggers.GH_NUM_RUNNERS
@@ -58,6 +60,7 @@ resource "null_resource" "remove_runner" {
   # Triggers are used here due to limitations in Terraform on passing vars to local-exec/destroy
   triggers = {
     GH_RUNNER_PREFIX = join("-", concat(var.global_settings.prefixes, [var.settings[each.key].gha_runner.runner_name_prefix]))
+    GH_REPO          = try(var.settings[each.key].gha_runner.repo, "")
     GH_ORG           = var.settings[each.key].gha_runner.gh_org
     GH_TOKEN         = var.settings[each.key].token
     GH_NUM_RUNNERS   = var.settings[each.key].gha_runner.num_runners

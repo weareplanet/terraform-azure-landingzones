@@ -14,6 +14,7 @@ import (
 
 type Config struct {
 	runnerPrefix string
+	repo         string
 	org          string
 	token        string
 	numRunners   int
@@ -25,8 +26,15 @@ func GetRunnersToRemove(client *github.Client, config Config) (map[int64]*github
 	opt := &github.ListOptions{Page: 1, PerPage: 30}
 	ctx := context.Background()
 
+	var runners *github.Runners
+	var resp *github.Response
+	var err error
 	for {
-		runners, resp, err := client.Actions.ListOrganizationRunners(ctx, config.org, opt)
+		if config.repo == "" {
+			runners, resp, err = client.Actions.ListOrganizationRunners(ctx, config.org, opt)
+		} else {
+			runners, resp, err = client.Actions.ListRunners(ctx, config.org, config.repo, opt)
+		}
 		if err != nil {
 			return nil, err
 		}
@@ -54,6 +62,11 @@ func GetEnvVars() (Config, error) {
 		return Config{}, errors.New("environment variable 'GH_RUNNER_PREFIX' required")
 	}
 
+	repo := os.Getenv("GH_REPO")
+	if repo == "" {
+		fmt.Println("No value found for GH_REPO, assuming runners are org level")
+	}
+
 	org := os.Getenv("GH_ORG")
 	if org == "" {
 		return Config{}, errors.New("environment variable 'GH_ORG' required")
@@ -73,7 +86,7 @@ func GetEnvVars() (Config, error) {
 		return Config{}, err
 	}
 
-	return Config{runnerPrefix, org, token, numRunners}, nil
+	return Config{runnerPrefix, repo, org, token, numRunners}, nil
 }
 
 func main() {
@@ -111,7 +124,11 @@ func main() {
 	// remove them from the org
 	for k, v := range runnersToRemove {
 		fmt.Printf("Removing runner %s\n", *v.Name)
-		_, err := client.Actions.RemoveOrganizationRunner(context.Background(), config.org, k)
+		if config.repo == "" {
+			_, err = client.Actions.RemoveOrganizationRunner(context.Background(), config.org, k)
+		} else {
+			_, err = client.Actions.RemoveRunner(context.Background(), config.org, config.repo, k)
+		}
 		if err != nil {
 			fmt.Printf("error removing runner %s: %v\n", *v.Name, err)
 			os.Exit(1)
