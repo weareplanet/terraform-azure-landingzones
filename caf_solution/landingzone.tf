@@ -4,7 +4,7 @@ module "solution" {
 
   # during dev cycles for the module, you can pick dev branches from GitHub, or from a local fork
   source = "git::https://github.com/weareplanet/terraform-azure-caf.git?ref=main"
-  # source = "../../terraform-azurerm-caf"
+  # source = "../../terraform-azure-caf"
 
   providers = {
     azurerm.vhub = azurerm.vhub

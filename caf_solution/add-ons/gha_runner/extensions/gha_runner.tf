@@ -31,6 +31,7 @@ resource "azurerm_virtual_machine_extension" "gha_runner" {
         var.settings[each.key].admin_username,
         var.settings[each.key].gha_runner.num_runners,
         var.settings[each.key].gha_runner.labels,
+        var.settings[each.key].gha_runner.runner_group
       )
     }
   )

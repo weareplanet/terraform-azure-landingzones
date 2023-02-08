@@ -9,6 +9,7 @@ PREFIX=${4}
 ADMIN_USER=${5}
 NUM_RUNNERS=${6}
 LABELS=${7}
+RUNNER_GROUP=${8}
 
 LATEST_VERSION=$(curl -s https://api.github.com/repos/actions/runner/releases/latest | grep -oP '"tag_name": "v\K(.*)(?=")')
 RUNNER_URL="https://github.com/actions/runner/releases/download/v${LATEST_VERSION}/actions-runner-linux-x64-${LATEST_VERSION}.tar.gz"
@@ -27,8 +28,23 @@ echo "Installing dependencies"
 sleep 10
 apt-get update
 apt-get install -y --no-install-recommends \
-  docker.io \
+  ca-certificates \
+  gnupg \
+  lsb-release \
   jq
+
+mkdir -m 0755 -p /etc/apt/keyrings
+curl -fsSL https://download.docker.com/linux/ubuntu/gpg |gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+echo \
+  "deb [arch=$(dpkg --print-architecture) signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+  $(lsb_release -cs) stable" |tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+echo "Installing docker-ce"
+apt-get update && apt-get install docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
+
+echo "Installing az cli"
+curl -sL https://aka.ms/InstallAzureCLIDeb |bash
 
 echo "Setting up docker"
 usermod -aG docker ${ADMIN_USER}
@@ -53,7 +69,7 @@ for i in $(seq 1 ${NUM_RUNNERS}); do
     -H 'Content-Type: application/json' | jq -r .token)
 
   sudo -u ${ADMIN_USER} ./config.sh --unattended --url ${REGISTRATION_URL} --token ${RUNNER_TOKEN} \
-    --replace --name ${runner_name} --labels ${LABELS}
+    --replace --name ${runner_name} --labels ${LABELS} --runnergroup ${RUNNER_GROUP}
   ./svc.sh install
   ./svc.sh start
 
