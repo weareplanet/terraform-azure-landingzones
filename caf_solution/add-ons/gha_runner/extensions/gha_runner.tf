@@ -63,7 +63,7 @@ resource "null_resource" "remove_runner" {
     GH_RUNNER_PREFIX = join("-", concat(var.global_settings.prefixes, [var.settings[each.key].gha_runner.runner_name_prefix]))
     GH_REPO          = try(var.settings[each.key].gha_runner.repo, "")
     GH_ORG           = var.settings[each.key].gha_runner.gh_org
-    GH_TOKEN         = var.settings[each.key].token
+    GH_TOKEN         = sensitive(var.settings[each.key].token)
     GH_NUM_RUNNERS   = var.settings[each.key].gha_runner.num_runners
   }
 }
