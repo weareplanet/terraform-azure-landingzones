@@ -22,7 +22,7 @@ resource "azurerm_virtual_machine_extension" "gha_runner" {
   protected_settings = jsonencode(
     {
       "commandToExecute" : format(
-        "bash '%s' '%s' '%s' '%s' '%s' '%s' '%s' '%s'",
+        "bash '%s' '%s' '%s' '%s' '%s' '%s' '%s' '%s' '%s'",
         var.extensions[each.key].runner_init_script,
         try(var.settings[each.key].gha_runner.repo, ""),
         var.settings[each.key].gha_runner.gh_org,
