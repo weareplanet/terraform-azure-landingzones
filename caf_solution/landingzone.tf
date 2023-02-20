@@ -1,8 +1,4 @@
 module "solution" {
-  #source  = "aztfmod/caf/azurerm"
-  #version = "5.5.5"
-
-  # during dev cycles for the module, you can pick dev branches from GitHub, or from a local fork
   source = "git::https://github.com/weareplanet/terraform-azure-caf.git?ref=main"
   # source = "../../terraform-azure-caf"
 

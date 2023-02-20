@@ -102,12 +102,12 @@ data "azurerm_app_service_environment" "data" {
 # }
 
 # App Services
-data "azurerm_app_service" "data" {
-  for_each = try(var.data_sources.app_services, {})
+# data "azurerm_app_service" "data" {
+#   for_each = try(var.data_sources.app_services, {})
 
-  name                = each.value.name
-  resource_group_name = each.value.resource_group_name
-}
+#   name                = each.value.name
+#   resource_group_name = each.value.resource_group_name
+# }
 
 # Application Security Groups
 data "azurerm_application_security_group" "data" {
