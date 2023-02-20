@@ -46,9 +46,9 @@ output "app_service_environments" {
 #   value = data.azurerm_service_plan.data
 # }
 
-output "app_services" {
-  value = data.azurerm_app_service.data
-}
+# output "app_services" {
+#   value = data.azurerm_app_service.data
+# }
 
 output "application_security_groups" {
   value = data.azurerm_application_security_group.data
