@@ -70,7 +70,7 @@ for i in $(seq 1 ${NUM_RUNNERS}); do
 
   sudo -u ${ADMIN_USER} ./config.sh --unattended --url ${REGISTRATION_URL} --token ${RUNNER_TOKEN} \
     --replace --name ${runner_name} --labels ${LABELS} --runnergroup ${RUNNER_GROUP}
-  ./svc.sh install
+  ./svc.sh install ${ADMIN_USER}
   ./svc.sh start
 
   popd
