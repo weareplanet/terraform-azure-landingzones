@@ -52,6 +52,7 @@ module "solution" {
   tfstates                              = var.tfstates
   user_type                             = var.user_type
   webapp                                = local.webapp
+  search_services                       = local.search_services
 
   diagnostics = {
     diagnostics_definition          = local.diagnostics.diagnostics_definition
