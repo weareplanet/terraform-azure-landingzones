@@ -27,3 +27,6 @@ variable "function_apps" {
 variable "static_sites" {
   default = {}
 }
+variable "azurerm_linux_web_app" {
+  default = {}
+}

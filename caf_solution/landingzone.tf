@@ -7,7 +7,7 @@ module "solution" {
   }
 
   azuread                               = local.azuread
-  cdn_frontdoor_profiles                = var.cdn
+  cdn                                   = local.cdn
   cloud                                 = local.cloud
   compute                               = local.compute
   apim                                  = local.apim
