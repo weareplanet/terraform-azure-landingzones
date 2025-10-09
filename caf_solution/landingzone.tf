@@ -1,6 +1,6 @@
 module "solution" {
-  #source = "git::https://github.com/weareplanet/terraform-azure-caf.git?ref=main"
-   source = "../../terraform-azure-caf"
+  source = "git::https://github.com/weareplanet/terraform-azure-caf.git?ref=main"
+  #source = "../../terraform-azure-caf"
 
   providers = {
     azurerm.vhub = azurerm.vhub
