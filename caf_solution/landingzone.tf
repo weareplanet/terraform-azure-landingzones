@@ -1,12 +1,13 @@
 module "solution" {
   source = "git::https://github.com/weareplanet/terraform-azure-caf.git?ref=main"
-  # source = "../../terraform-azure-caf"
+  #source = "../../terraform-azure-caf"
 
   providers = {
     azurerm.vhub = azurerm.vhub
   }
 
   azuread                               = local.azuread
+  cdn                                   = local.cdn
   cloud                                 = local.cloud
   compute                               = local.compute
   apim                                  = local.apim
